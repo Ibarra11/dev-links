@@ -1,0 +1,15 @@
+export const PLATFORMS = [
+  "Github",
+  "Frontend Mentor",
+  "LinkedIn",
+  "Twitter",
+  "YouTube",
+  "Facebook",
+  "Twitch",
+  "Dev.to",
+  "Codewars",
+  "freeCodeCamp",
+  "GitLab",
+  "Hashnode",
+  "Stack Overflow",
+];

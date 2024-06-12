@@ -1,13 +1,16 @@
 import { PlusIcon } from "lucide-react";
 import EmptyLink from "../assets/images/illustration-empty.svg";
 import Button from "./Button";
+import React from "react";
+import SocialLinks from "./SocialLinks";
 
 export default function CustomizeLinks() {
+  const [links, setLinks] = React.useState<Array<number>>([]);
   return (
     <div className="rounded-xl bg-white lg:h-full">
       <div className="lg:mx-auto lg:h-full lg:w-full lg:max-w-5xl">
         <div className="p-6 md:p-10 lg:pt-16">
-          <div className="space-y-2">
+          <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
               Customize your links
             </h1>
@@ -16,31 +19,17 @@ export default function CustomizeLinks() {
               the world!
             </p>
           </div>
-          <div className="mt-10">
-            <Button className="gap-1" variant="secondary">
+          <div className="mb-6">
+            <Button
+              onClick={() => setLinks([...links, 1])}
+              className="gap-1"
+              variant="secondary"
+            >
               <PlusIcon size={16} />
               Add New Link
             </Button>
           </div>
-          <div className="mt-6 flex h-96 items-center rounded-xl bg-brand-gray-100 p-5 md:h-[500px]">
-            <div className="w-full">
-              <div className="flex justify-center">
-                <img
-                  src={EmptyLink}
-                  aria-hidded="true"
-                  className="block h-20 w-32 object-cover md:h-40 md:w-60"
-                />
-              </div>
-              <h2 className="mt-6 text-center text-xl font-bold text-brand-gray-300 md:text-2xl">
-                Let's get you started
-              </h2>
-              <p className="mx-auto mt-6 max-w-md text-center text-base">
-                Use the “Add new link” button to get started. Once you have more
-                than one link, you can reorder and edit them. We're here to help
-                you share your profiles with everyone!
-              </p>
-            </div>
-          </div>
+          {links.length > 0 ? <SocialLinks links={links} /> : <EmptyViewLink />}
         </div>
         {/* divider */}
         <div className="h-px bg-brand-gray-200 lg:hidden"></div>
@@ -60,6 +49,30 @@ export default function CustomizeLinks() {
             </Button>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function EmptyViewLink() {
+  return (
+    <div className="flex h-96 items-center rounded-xl bg-brand-gray-100 p-5 md:h-[500px]">
+      <div className="w-full">
+        <div className="flex justify-center">
+          <img
+            src={EmptyLink}
+            aria-hidded="true"
+            className="block h-20 w-32 object-cover md:h-40 md:w-60"
+          />
+        </div>
+        <h2 className="mt-6 text-center text-xl font-bold text-brand-gray-300 md:text-2xl">
+          Let's get you started
+        </h2>
+        <p className="mx-auto mt-6 max-w-md text-center text-base">
+          Use the “Add new link” button to get started. Once you have more than
+          one link, you can reorder and edit them. We're here to help you share
+          your profiles with everyone!
+        </p>
       </div>
     </div>
   );
