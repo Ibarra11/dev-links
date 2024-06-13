@@ -8,8 +8,9 @@ export const PLATFORMS = [
   "Twitch",
   "Dev.to",
   "Codewars",
+  "Codepen",
   "freeCodeCamp",
   "GitLab",
   "Hashnode",
   "Stack Overflow",
-];
+] as const;
