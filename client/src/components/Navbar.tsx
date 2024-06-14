@@ -1,9 +1,16 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import MobileNavLogo from "../assets/images/logo-mobile-nav.svg";
 import LogoSmall from "../assets/images/logo-small.svg";
 import { cn } from "../lib/utils";
 import { Link as IconLink, CircleUserRound, Eye } from "lucide-react";
+import Button from "./Button";
 export default function Navbar() {
+  const { pathname } = useLocation();
+  const isPreviewNav = pathname === "/preview";
+  return isPreviewNav ? <PreviewNav /> : <MainNav />;
+}
+
+function MainNav() {
   return (
     <nav className="flex items-center justify-between bg-white py-4 pl-6 pr-4 md:rounded-xl">
       <Link to="/">
@@ -45,6 +52,26 @@ export default function Navbar() {
         <Eye className="md:hidden" size={20} />
         <span className="hidden text-base md:inline-block">Preview</span>
       </Link>
+    </nav>
+  );
+}
+
+function PreviewNav() {
+  return (
+    <nav className="flex gap-4 py-4 pl-6 pr-4 md:justify-between md:rounded-xl md:bg-white">
+      <Button
+        className="flex-1 md:w-fit md:flex-grow-0 md:px-6"
+        variant="secondary"
+      >
+        Back to Editor
+      </Button>
+
+      <Button
+        className="flex-1 md:w-fit md:flex-grow-0 md:px-6"
+        variant="primary"
+      >
+        Share Link
+      </Button>
     </nav>
   );
 }
