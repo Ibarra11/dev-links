@@ -1,9 +1,10 @@
-import CustomizeLinks from "../components/CustomizeLinks";
 import IphoneMockupLayout from "../components/IphoneMockupLayout";
-export default function LinksEditorPage() {
+import ProfileDetails from "../components/ProfileDetails";
+
+export default function ProfilePage() {
   return (
     <IphoneMockupLayout>
-      <CustomizeLinks />
+      <ProfileDetails />
     </IphoneMockupLayout>
   );
 }

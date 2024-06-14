@@ -24,7 +24,6 @@ export default function PlatformSelect() {
           <SocialIcon className="size-4" id={selected} />
           <Select.Value placeholder="Select a Social…" />
         </div>
-
         <Select.Icon className="text-brand-purple-300">
           <ChevronDown
             className="transition-transform group-data-[state=open]:rotate-180"

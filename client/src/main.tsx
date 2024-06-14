@@ -8,6 +8,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import RootLayout from "./components/RootLayout";
 import LinksEditorPage from "./pages/LinksEditorPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -21,7 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    children: [{ path: "/links", element: <LinksEditorPage /> }],
+    children: [
+      { path: "/links", element: <LinksEditorPage /> },
+      { path: "/profile", element: <ProfilePage /> },
+    ],
   },
 ]);
 
