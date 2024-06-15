@@ -5,8 +5,14 @@ import React from "react";
 import PlatformSelect from "./Select";
 interface Props {
   linkNumber: number;
+  handleRemoveLink: (linkId: string) => void;
+  linkId: string;
 }
-export default function SocialLink({ linkNumber }: Props) {
+export default function SocialLink({
+  linkId,
+  linkNumber,
+  handleRemoveLink,
+}: Props) {
   const id = React.useId();
   return (
     <div className="space-y-3 rounded-xl bg-brand-gray-100 p-5">
@@ -15,7 +21,9 @@ export default function SocialLink({ linkNumber }: Props) {
           <Grip size={16} />
           <p className="text-base font-bold">Link #{linkNumber}</p>
         </div>
-        <button className="text-base">Remove</button>
+        <button onClick={() => handleRemoveLink(linkId)} className="text-base">
+          Remove
+        </button>
       </div>
       <div className="relative space-y-1">
         <InputLabel htmlFor={`link-${id}`}>Platform</InputLabel>

@@ -5,10 +5,22 @@ import React from "react";
 import SocialLinks from "./SocialLinks";
 
 export default function CustomizeLinks() {
-  const [links, setLinks] = React.useState<Array<number>>([]);
+  const [links, setLinks] = React.useState<Array<{ id: string }>>([]);
+  function handleRemoveLink(linkId: string) {
+    const index = links.findIndex((link) => link.id === linkId);
+    if (index >= 0) {
+      if (index === links.length - 1) {
+        setLinks(links.slice(0, -1));
+      } else {
+        const leftHalf = links.slice(0, index);
+        const rightHalf = links.slice(index + 1);
+        setLinks(leftHalf.concat(rightHalf));
+      }
+    }
+  }
   return (
     <div className="rounded-xl bg-white lg:h-full">
-      <div className="lg:mx-auto lg:h-full lg:w-full lg:max-w-5xl">
+      <form className="lg:mx-auto lg:h-full lg:w-full lg:max-w-5xl">
         <div className="p-6 md:p-10 lg:pt-16">
           <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
@@ -21,35 +33,44 @@ export default function CustomizeLinks() {
           </div>
           <div className="mb-6">
             <Button
-              onClick={() => setLinks([...links, 1])}
+              onClick={() => setLinks([...links, { id: crypto.randomUUID() }])}
               className="gap-1"
               variant="secondary"
+              type="button"
             >
               <PlusIcon size={16} />
               Add New Link
             </Button>
           </div>
-          {links.length > 0 ? <SocialLinks links={links} /> : <EmptyViewLink />}
+          {links.length > 0 ? (
+            <SocialLinks handleRemoveLink={handleRemoveLink} links={links} />
+          ) : (
+            <EmptyViewLink />
+          )}
         </div>
         {/* divider */}
         <div className="h-px bg-brand-gray-200 lg:hidden"></div>
         {/* Save button */}
         <div className="p-4 md:px-10 md:py-6">
-          <Button className="md:hidden" disabled variant="primary">
+          <Button
+            className="md:hidden"
+            disabled={links.length === 0}
+            variant="primary"
+          >
             Save
           </Button>
           <div className="hidden md:flex md:justify-end lg:hidden">
-            <Button size="sm" disabled variant="primary">
+            <Button disabled={links.length === 0} size="sm" variant="primary">
               Save
             </Button>
           </div>
           <div className="mx-auto hidden lg:block lg:w-full lg:max-w-lg">
-            <Button disabled variant="primary">
+            <Button disabled={links.length === 0} variant="primary">
               Save
             </Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
