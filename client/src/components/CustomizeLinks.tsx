@@ -3,9 +3,13 @@ import EmptyLink from "../assets/images/illustration-empty.svg";
 import Button from "./Button";
 import React from "react";
 import SocialLinks from "./SocialLinks";
+import { PLATFORMS } from "../lib/constants";
 
 export default function CustomizeLinks() {
-  const [links, setLinks] = React.useState<Array<{ id: string }>>([]);
+  const [links, setLinks] = React.useState<
+    Array<{ id: string; platform: (typeof PLATFORMS)[number] }>
+  >([]);
+
   function handleRemoveLink(linkId: string) {
     const index = links.findIndex((link) => link.id === linkId);
     if (index >= 0) {
@@ -17,6 +21,20 @@ export default function CustomizeLinks() {
         setLinks(leftHalf.concat(rightHalf));
       }
     }
+  }
+
+  function handleUpdateLink(
+    linkId: string,
+    nextPlatform: (typeof PLATFORMS)[number],
+  ) {
+    const nextLinks = links.map((link) => {
+      if (link.id === linkId) {
+        return { ...link, platform: nextPlatform };
+      }
+      return link;
+    });
+    console.log(nextLinks);
+    setLinks(nextLinks);
   }
   return (
     <div className="rounded-xl bg-white lg:h-full">
@@ -33,7 +51,21 @@ export default function CustomizeLinks() {
           </div>
           <div className="mb-6">
             <Button
-              onClick={() => setLinks([...links, { id: crypto.randomUUID() }])}
+              onClick={() => {
+                // When they select a link defaul to the first available platform,
+                console.log(links);
+                const defaultPlatform = PLATFORMS.find((platform) => {
+                  return links.every((link) => link.platform !== platform);
+                })!;
+                setLinks([
+                  ...links,
+                  {
+                    id: crypto.randomUUID(),
+                    platform: defaultPlatform,
+                  },
+                ]);
+              }}
+              disabled={links.length === PLATFORMS.length}
               className="gap-1"
               variant="secondary"
               type="button"
@@ -43,7 +75,11 @@ export default function CustomizeLinks() {
             </Button>
           </div>
           {links.length > 0 ? (
-            <SocialLinks handleRemoveLink={handleRemoveLink} links={links} />
+            <SocialLinks
+              handleUpdateLink={handleUpdateLink}
+              handleRemoveLink={handleRemoveLink}
+              links={links}
+            />
           ) : (
             <EmptyViewLink />
           )}

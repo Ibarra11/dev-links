@@ -3,15 +3,25 @@ import InputLabel from "./InputLabel";
 import InputWithIcon from "./InputWithIcon";
 import React from "react";
 import PlatformSelect from "./Select";
+import { PLATFORMS } from "../lib/constants";
 interface Props {
   linkNumber: number;
   handleRemoveLink: (linkId: string) => void;
   linkId: string;
+  selectedPlatform: (typeof PLATFORMS)[number];
+  selectedPlatforms: Array<(typeof PLATFORMS)[number]>;
+  handleUpdateLink: (
+    linkId: string,
+    nextLink: (typeof PLATFORMS)[number],
+  ) => void;
 }
 export default function SocialLink({
   linkId,
   linkNumber,
   handleRemoveLink,
+  selectedPlatform,
+  selectedPlatforms,
+  handleUpdateLink,
 }: Props) {
   const id = React.useId();
   return (
@@ -27,7 +37,12 @@ export default function SocialLink({
       </div>
       <div className="relative space-y-1">
         <InputLabel htmlFor={`link-${id}`}>Platform</InputLabel>
-        <PlatformSelect />
+        <PlatformSelect
+          selectedPlatform={selectedPlatform}
+          selectedPlatforms={selectedPlatforms}
+          handleUpdateLink={handleUpdateLink}
+          linkId={linkId}
+        />
       </div>
       <div className="space-y-1">
         <InputLabel htmlFor={`link-${id}`}>Link</InputLabel>

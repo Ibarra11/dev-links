@@ -3,25 +3,42 @@ import { ChevronDown } from "lucide-react";
 import { PLATFORMS } from "../lib/constants";
 import React from "react";
 import { SocialIcon } from "./SocialIcon";
+import { cn } from "../lib/utils";
+interface Props {
+  selectedPlatform: (typeof PLATFORMS)[number];
+  selectedPlatforms: Array<(typeof PLATFORMS)[number]>;
+  handleUpdateLink: (
+    linkId: string,
+    nextLink: (typeof PLATFORMS)[number],
+  ) => void;
+  linkId: string;
+}
 
-export default function PlatformSelect() {
-  const [selected, setSelected] = React.useState<(typeof PLATFORMS)[number]>(
-    PLATFORMS[0],
-  );
+export default function PlatformSelect({
+  selectedPlatforms,
+  handleUpdateLink,
+  linkId,
+  ...props
+}: Props) {
+  const [selectedPlatform, setSelectedPlatform] = React.useState<
+    (typeof PLATFORMS)[number]
+  >(props.selectedPlatform);
   return (
     <Select.Root
       onValueChange={(e) => {
-        setSelected(e as (typeof PLATFORMS)[number]);
+        const nextPlatform = e as (typeof PLATFORMS)[number];
+        setSelectedPlatform(nextPlatform);
+        handleUpdateLink(linkId, nextPlatform);
       }}
-      defaultValue={selected}
-      value={selected}
+      defaultValue={selectedPlatform}
+      value={selectedPlatform}
     >
       <Select.Trigger
         className="group flex h-12 w-full items-center justify-between bg-white px-4 py-3"
         aria-label="Food"
       >
         <div className="flex items-center gap-2">
-          <SocialIcon className="size-4" id={selected} />
+          <SocialIcon className="size-4" id={selectedPlatform} />
           <Select.Value placeholder="Select a Social…" />
         </div>
         <Select.Icon className="text-brand-purple-300">
@@ -42,7 +59,11 @@ export default function PlatformSelect() {
             <Select.Group className="text-brand-gray-300">
               {PLATFORMS.map((platform, idx) => (
                 <SelectItem
-                  selected={selected === platform}
+                  disabled={
+                    selectedPlatforms.includes(platform) &&
+                    platform !== selectedPlatform
+                  }
+                  selected={selectedPlatform === platform}
                   seperator={idx !== PLATFORMS.length - 1}
                   platform={platform}
                 />
@@ -59,16 +80,24 @@ function SelectItem({
   platform,
   seperator,
   selected,
+  disabled,
 }: {
   platform: (typeof PLATFORMS)[number];
   seperator: boolean;
   selected: boolean;
+  disabled: boolean;
 }) {
   return (
     <>
       <Select.Item
-        className={`relative flex items-center gap-2 overflow-clip rounded px-2 py-1 text-brand-gray-300 ${selected ? "text-brand-purple-300" : "hover:bg-brand-gray-100"} `}
+        className={cn(
+          `relative flex items-center gap-2 overflow-clip rounded p-2 text-brand-gray-300`,
+          selected && "text-brand-purple-300",
+          disabled && "opacity-50",
+          !selected && !disabled && "hover:bg-brand-gray-100",
+        )}
         value={platform}
+        disabled={disabled}
       >
         <SocialIcon className="size-4" id={platform} />
         <Select.ItemText className="text-base">{platform}</Select.ItemText>
