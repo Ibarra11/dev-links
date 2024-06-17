@@ -37,9 +37,9 @@ export default function CustomizeLinks() {
     setLinks(nextLinks);
   }
   return (
-    <div className="rounded-xl bg-white lg:h-full">
-      <form className="lg:mx-auto lg:h-full lg:w-full lg:max-w-5xl">
-        <div className="p-6 md:p-10 lg:pt-16">
+    <div className="flex h-full flex-col rounded-xl bg-white">
+      <form className="flex h-full flex-col lg:mx-auto lg:w-full lg:max-w-5xl">
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 lg:pt-16">
           <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
               Customize your links
@@ -53,7 +53,7 @@ export default function CustomizeLinks() {
             <Button
               onClick={() => {
                 // When they select a link defaul to the first available platform,
-                console.log(links);
+
                 const defaultPlatform = PLATFORMS.find((platform) => {
                   return links.every((link) => link.platform !== platform);
                 })!;
@@ -84,26 +84,28 @@ export default function CustomizeLinks() {
             <EmptyViewLink />
           )}
         </div>
-        {/* divider */}
-        <div className="h-px bg-brand-gray-200 lg:hidden"></div>
-        {/* Save button */}
-        <div className="p-4 md:px-10 md:py-6">
-          <Button
-            className="md:hidden"
-            disabled={links.length === 0}
-            variant="primary"
-          >
-            Save
-          </Button>
-          <div className="hidden md:flex md:justify-end lg:hidden">
-            <Button disabled={links.length === 0} size="sm" variant="primary">
+        <div>
+          {/* divider */}
+          <div className="h-px bg-brand-gray-200 lg:hidden"></div>
+          {/* Save button */}
+          <div className="p-4 md:px-10 md:py-6">
+            <Button
+              className="md:hidden"
+              disabled={links.length === 0}
+              variant="primary"
+            >
               Save
             </Button>
-          </div>
-          <div className="mx-auto hidden lg:block lg:w-full lg:max-w-lg">
-            <Button disabled={links.length === 0} variant="primary">
-              Save
-            </Button>
+            <div className="hidden md:flex md:justify-end lg:hidden">
+              <Button disabled={links.length === 0} size="sm" variant="primary">
+                Save
+              </Button>
+            </div>
+            <div className="mx-auto hidden lg:block lg:w-full lg:max-w-lg">
+              <Button disabled={links.length === 0} variant="primary">
+                Save
+              </Button>
+            </div>
           </div>
         </div>
       </form>

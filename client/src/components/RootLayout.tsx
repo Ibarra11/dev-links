@@ -7,7 +7,7 @@ export default function RootLayout() {
       <header className="relative z-10 rounded-xl md:px-6 md:pt-6">
         <Navbar />
       </header>
-      <div className="flex-1 overflow-y-hidden p-4 md:overflow-y-visible md:p-6">
+      <div className="flex-1 overflow-y-hidden p-4 md:p-6">
         <Outlet />
       </div>
     </div>
