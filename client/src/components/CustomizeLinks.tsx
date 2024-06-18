@@ -3,16 +3,51 @@ import EmptyLink from "../assets/images/illustration-empty.svg";
 import Button from "./Button";
 import React from "react";
 import SocialLinks from "./SocialLinks";
-import { PLATFORMS } from "../lib/constants";
-import { Platforms } from "../types";
+import { PLATFORMS, PLATFORM_PATTERNS } from "../lib/constants";
+import { Link, Platforms, LinkError } from "../types";
 
 export default function CustomizeLinks() {
-  const [links, setLinks] = React.useState<
-    Array<{ id: string; platform: Platforms }>
-  >([]);
+  const [links, setLinks] = React.useState<Array<Link>>([]);
+  const [errors, setErrors] = React.useState<Record<
+    Platforms,
+    LinkError
+  > | null>(null);
 
-  function handleRemoveLink(linkId: string) {
-    const index = links.findIndex((link) => link.id === linkId);
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const errors = {} as Record<Platforms, LinkError>;
+    const hasErrors = links.filter((link) => {
+      if (link.url.trim() === "") {
+        return true;
+      }
+      if (
+        !PLATFORM_PATTERNS[link.platform].test(link.url.toLocaleLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    });
+
+    if (hasErrors.length > 0) {
+      hasErrors.forEach((link) => {
+        if (link.url.trim() === "") {
+          errors[link.platform] = { type: "empty_url" };
+        } else {
+          errors[link.platform] = { type: "invalid_url" };
+        }
+      });
+    }
+    setErrors(errors);
+  }
+
+  function removeError(platform: Platforms) {
+    if (errors && errors[platform]) {
+      delete errors[platform];
+    }
+  }
+
+  function handleRemoveLink(platform: Platforms) {
+    const index = links.findIndex((link) => link.platform === platform);
     if (index >= 0) {
       if (index === links.length - 1) {
         setLinks(links.slice(0, -1));
@@ -22,21 +57,40 @@ export default function CustomizeLinks() {
         setLinks(leftHalf.concat(rightHalf));
       }
     }
+    removeError(platform);
   }
 
-  function handleUpdateLink(linkId: string, nextPlatform: Platforms) {
+  function handleUpdateLinkUrl(platform: Platforms, url: string) {
     const nextLinks = links.map((link) => {
-      if (link.id === linkId) {
+      if (link.platform === platform) {
+        return { ...link, url };
+      }
+      return link;
+    });
+    setLinks(nextLinks);
+    removeError(platform);
+  }
+
+  function handleUpdateLinkPlatform(
+    prevPlatform: Platforms,
+    nextPlatform: Platforms,
+  ) {
+    const nextLinks = links.map((link) => {
+      if (link.platform === prevPlatform) {
         return { ...link, platform: nextPlatform };
       }
       return link;
     });
-
     setLinks(nextLinks);
+    removeError(prevPlatform);
   }
+
   return (
     <div className="flex h-full flex-col rounded-xl bg-white">
-      <form className="flex h-full flex-col lg:mx-auto lg:w-full lg:max-w-5xl">
+      <form
+        onSubmit={handleSubmit}
+        className="flex h-full flex-col lg:mx-auto lg:w-full lg:max-w-5xl"
+      >
         <div className="flex-1 overflow-y-auto p-6 md:p-10 lg:pt-16">
           <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
@@ -57,8 +111,8 @@ export default function CustomizeLinks() {
                 setLinks([
                   ...links,
                   {
-                    id: crypto.randomUUID(),
                     platform: defaultPlatform,
+                    url: "",
                   },
                 ]);
               }}
@@ -73,9 +127,11 @@ export default function CustomizeLinks() {
           </div>
           {links.length > 0 ? (
             <SocialLinks
-              handleUpdateLink={handleUpdateLink}
+              handleUpdateLinkPlatform={handleUpdateLinkPlatform}
+              handleUpdateLinkUrl={handleUpdateLinkUrl}
               handleRemoveLink={handleRemoveLink}
               links={links}
+              errors={errors}
             />
           ) : (
             <EmptyViewLink />

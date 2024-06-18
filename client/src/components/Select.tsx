@@ -8,14 +8,16 @@ import { Platforms } from "../types";
 interface Props {
   selectedPlatform: Platforms;
   selectedPlatforms: Array<Platforms>;
-  handleUpdateLink: (linkId: string, nextLink: Platforms) => void;
-  linkId: string;
+  handleUpdateLinkPlatform: (
+    prevPlatform: Platforms,
+    nextLink: Platforms,
+  ) => void;
 }
 
 export default function PlatformSelect({
   selectedPlatforms,
-  handleUpdateLink,
-  linkId,
+  handleUpdateLinkPlatform,
+
   ...props
 }: Props) {
   const [selectedPlatform, setSelectedPlatform] = React.useState<Platforms>(
@@ -26,7 +28,7 @@ export default function PlatformSelect({
       onValueChange={(e) => {
         const nextPlatform = e as Platforms;
         setSelectedPlatform(nextPlatform);
-        handleUpdateLink(linkId, nextPlatform);
+        handleUpdateLinkPlatform(selectedPlatform, nextPlatform);
       }}
       defaultValue={selectedPlatform}
       value={selectedPlatform}

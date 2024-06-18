@@ -34,7 +34,7 @@ export const PLACEHOLDERS: Record<Platforms, string> = {
   "Stack Overflow": "https://www.stackoverflow.com/xyz",
 };
 
-export const platformPatterns: Record<Platforms, RegExp> = {
+export const PLATFORM_PATTERNS: Record<Platforms, RegExp> = {
   Github: /^(https?:\/\/)?(www\.)?github\.com\/.+$/,
   "Frontend Mentor": /^(https?:\/\/)?(www\.)?frontendmentor\.io\/.+$/,
   LinkedIn: /^(https?:\/\/)?(www\.)?linkedin\.com\/.+$/,
