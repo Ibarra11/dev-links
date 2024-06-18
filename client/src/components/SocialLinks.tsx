@@ -1,13 +1,11 @@
 import { PLATFORMS } from "../lib/constants";
+import { Platforms } from "../types";
 import SocialLink from "./SocialLink";
 
 interface Props {
-  links: Array<{ id: string; platform: (typeof PLATFORMS)[number] }>;
+  links: Array<{ id: string; platform: Platforms }>;
   handleRemoveLink: (linkId: string) => void;
-  handleUpdateLink: (
-    linkId: string,
-    nextPlatform: (typeof PLATFORMS)[number],
-  ) => void;
+  handleUpdateLink: (linkId: string, nextPlatform: Platforms) => void;
 }
 export default function SocialLinks({
   links,

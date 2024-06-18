@@ -4,13 +4,11 @@ import { PLATFORMS } from "../lib/constants";
 import React from "react";
 import { SocialIcon } from "./SocialIcon";
 import { cn } from "../lib/utils";
+import { Platforms } from "../types";
 interface Props {
-  selectedPlatform: (typeof PLATFORMS)[number];
-  selectedPlatforms: Array<(typeof PLATFORMS)[number]>;
-  handleUpdateLink: (
-    linkId: string,
-    nextLink: (typeof PLATFORMS)[number],
-  ) => void;
+  selectedPlatform: Platforms;
+  selectedPlatforms: Array<Platforms>;
+  handleUpdateLink: (linkId: string, nextLink: Platforms) => void;
   linkId: string;
 }
 
@@ -20,13 +18,13 @@ export default function PlatformSelect({
   linkId,
   ...props
 }: Props) {
-  const [selectedPlatform, setSelectedPlatform] = React.useState<
-    (typeof PLATFORMS)[number]
-  >(props.selectedPlatform);
+  const [selectedPlatform, setSelectedPlatform] = React.useState<Platforms>(
+    props.selectedPlatform,
+  );
   return (
     <Select.Root
       onValueChange={(e) => {
-        const nextPlatform = e as (typeof PLATFORMS)[number];
+        const nextPlatform = e as Platforms;
         setSelectedPlatform(nextPlatform);
         handleUpdateLink(linkId, nextPlatform);
       }}
@@ -82,7 +80,7 @@ function SelectItem({
   selected,
   disabled,
 }: {
-  platform: (typeof PLATFORMS)[number];
+  platform: Platforms;
   seperator: boolean;
   selected: boolean;
   disabled: boolean;

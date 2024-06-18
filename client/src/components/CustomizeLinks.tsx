@@ -4,10 +4,11 @@ import Button from "./Button";
 import React from "react";
 import SocialLinks from "./SocialLinks";
 import { PLATFORMS } from "../lib/constants";
+import { Platforms } from "../types";
 
 export default function CustomizeLinks() {
   const [links, setLinks] = React.useState<
-    Array<{ id: string; platform: (typeof PLATFORMS)[number] }>
+    Array<{ id: string; platform: Platforms }>
   >([]);
 
   function handleRemoveLink(linkId: string) {
@@ -23,17 +24,14 @@ export default function CustomizeLinks() {
     }
   }
 
-  function handleUpdateLink(
-    linkId: string,
-    nextPlatform: (typeof PLATFORMS)[number],
-  ) {
+  function handleUpdateLink(linkId: string, nextPlatform: Platforms) {
     const nextLinks = links.map((link) => {
       if (link.id === linkId) {
         return { ...link, platform: nextPlatform };
       }
       return link;
     });
-    console.log(nextLinks);
+
     setLinks(nextLinks);
   }
   return (
@@ -53,7 +51,6 @@ export default function CustomizeLinks() {
             <Button
               onClick={() => {
                 // When they select a link defaul to the first available platform,
-
                 const defaultPlatform = PLATFORMS.find((platform) => {
                   return links.every((link) => link.platform !== platform);
                 })!;
