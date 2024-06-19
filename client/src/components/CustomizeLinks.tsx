@@ -5,6 +5,13 @@ import React from "react";
 import SocialLinks from "./SocialLinks";
 import { PLATFORMS, PLATFORM_PATTERNS } from "../lib/constants";
 import { Link, Platforms, LinkError } from "../types";
+import { DndContext } from "@dnd-kit/core";
+import type { DragEndEvent } from "@dnd-kit/core";
+import {
+  restrictToParentElement,
+  restrictToVerticalAxis,
+  createSnapModifier,
+} from "@dnd-kit/modifiers";
 
 export default function CustomizeLinks() {
   const [links, setLinks] = React.useState<Array<Link>>([]);
@@ -12,6 +19,9 @@ export default function CustomizeLinks() {
     Platforms,
     LinkError
   > | null>(null);
+
+  const gridSize = 20; // pixels
+  const snapToGridModifier = createSnapModifier(gridSize);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -85,13 +95,27 @@ export default function CustomizeLinks() {
     removeError(prevPlatform);
   }
 
+  const handleDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+
+    if (over && active.id !== over.id) {
+      const nextLinks = [...links];
+      const activePosition: number = (active.data.current as any).position;
+      const overPosition: number = (over.data.current as any).position;
+      const temp = nextLinks[overPosition];
+      nextLinks[overPosition] = nextLinks[activePosition];
+      nextLinks[activePosition] = temp;
+      setLinks(nextLinks);
+    }
+  };
+
   return (
     <div className="flex h-full flex-col rounded-xl bg-white">
       <form
         onSubmit={handleSubmit}
         className="flex h-full flex-col lg:mx-auto lg:w-full lg:max-w-5xl"
       >
-        <div className="flex-1 overflow-y-auto p-6 md:p-10 lg:pt-16">
+        <div className="relative flex-1 overflow-y-auto border border-green-500 p-6 md:p-10 lg:pt-16">
           <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
               Customize your links
@@ -126,13 +150,22 @@ export default function CustomizeLinks() {
             </Button>
           </div>
           {links.length > 0 ? (
-            <SocialLinks
-              handleUpdateLinkPlatform={handleUpdateLinkPlatform}
-              handleUpdateLinkUrl={handleUpdateLinkUrl}
-              handleRemoveLink={handleRemoveLink}
-              links={links}
-              errors={errors}
-            />
+            <DndContext
+              onDragEnd={handleDragEnd}
+              modifiers={[
+                restrictToParentElement,
+                restrictToVerticalAxis,
+                snapToGridModifier,
+              ]}
+            >
+              <SocialLinks
+                handleUpdateLinkPlatform={handleUpdateLinkPlatform}
+                handleUpdateLinkUrl={handleUpdateLinkUrl}
+                handleRemoveLink={handleRemoveLink}
+                links={links}
+                errors={errors}
+              />
+            </DndContext>
           ) : (
             <EmptyViewLink />
           )}
