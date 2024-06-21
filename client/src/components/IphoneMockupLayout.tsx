@@ -7,7 +7,7 @@ export default function IphoneMockupLayout({
       <div className="hidden lg:grid lg:flex-1 lg:place-content-center">
         <img className="h-[600px] w-80" src={PhoneMockup} alt="phone mockup" />
       </div>
-      <div className="h-full lg:flex-1 lg:py-12">{children}</div>
+      <div className="h-full lg:flex-1">{children}</div>
     </div>
   );
 }

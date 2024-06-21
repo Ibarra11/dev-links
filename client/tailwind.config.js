@@ -21,6 +21,21 @@ export default {
           red: "hsl(0, 100%, 61%)",
         },
       },
+      keyframes: {
+        "toast-enter": {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        "toast-exit": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-200%)" },
+        },
+      },
+      animation: {
+        "toast-enter":
+          "toast-enter 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+        "toast-exit": "toast-exit 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],

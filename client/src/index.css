@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+div:has(> #toast-container) {
+  inset: 0 !important;
+  display: revert !important;
+  transition: none !important;
+  transform: none !important;
+}
