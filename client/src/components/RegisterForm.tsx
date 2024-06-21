@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 
 import Button from "./Button";
-import InputWithIcon from "./InputWithIcon";
+import InputWithIcon from "./Input";
 import InputLabel from "./InputLabel";
 export default function SignupForm() {
   return (

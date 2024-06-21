@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 
 import Button from "./Button";
-import InputWithIcon from "./InputWithIcon";
+import Input from "./Input";
 import InputLabel from "./InputLabel";
 export default function LoginForm() {
   return (
@@ -16,7 +16,7 @@ export default function LoginForm() {
       <form className="space-y-6">
         <div className="space-y-1">
           <InputLabel htmlFor="email">Email address</InputLabel>
-          <InputWithIcon
+          <Input
             type="text"
             id="email"
             placeholder="e.g. alan@gmail.com"
@@ -25,7 +25,7 @@ export default function LoginForm() {
         </div>
         <div className="space-y-1">
           <InputLabel htmlFor="email">Password</InputLabel>
-          <InputWithIcon
+          <Input
             type="password"
             id="password"
             placeholder="Enter your password"

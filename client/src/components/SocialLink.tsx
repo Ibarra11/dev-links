@@ -1,6 +1,6 @@
 import { Grip, Link } from "lucide-react";
 import InputLabel from "./InputLabel";
-import InputWithIcon from "./InputWithIcon";
+import InputWithIcon from "./Input";
 import React from "react";
 import PlatformSelect from "./Select";
 import { LinkError, Platforms } from "../types";
