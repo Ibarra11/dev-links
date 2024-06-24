@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import MobileNavLogo from "../assets/images/logo-mobile-nav.svg";
 import LogoSmall from "../assets/images/logo-small.svg";
 import { cn } from "../lib/utils";
@@ -59,15 +59,18 @@ function MainNav() {
 }
 
 function PreviewNav() {
+  const navigate = useNavigate();
   return (
     <nav className="flex gap-4 py-4 pl-6 pr-4 md:justify-between md:rounded-xl md:bg-white">
       <Button
         className="flex-1 md:w-fit md:flex-grow-0 md:px-6"
         variant="secondary"
+        onClick={() => {
+          navigate("/profile");
+        }}
       >
         Back to Editor
       </Button>
-
       <Button
         className="flex-1 md:w-fit md:flex-grow-0 md:px-6"
         variant="primary"
