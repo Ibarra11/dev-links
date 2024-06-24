@@ -3,7 +3,7 @@ import InputLabel from "./InputLabel";
 import InputWithIcon from "./Input";
 import React from "react";
 import PlatformSelect from "./Select";
-import { LinkError, Platforms } from "../types";
+import { InputError, Platforms } from "../types";
 import { PLACEHOLDERS } from "../lib/constants";
 import { useDraggable, useDroppable } from "@dnd-kit/core";
 import DraggableDroppableItem from "./DraggaleAndDroppableItem";
@@ -18,7 +18,7 @@ interface Props {
     nextLink: Platforms,
   ) => void;
   handleUpdateLinkUrl: (platform: Platforms, url: string) => void;
-  errors: Record<Platforms, LinkError> | null;
+  errors: Record<Platforms, InputError> | null;
 }
 export default function SocialLink({
   linkNumber,

@@ -1,9 +1,9 @@
 import { cn } from "../lib/utils";
-import { LinkError } from "../types";
+import { InputError } from "../types";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactElement;
-  error?: LinkError["type"] | null;
+  error?: InputError["type"] | null;
 }
 export default function Input({ icon, error, className, ...delegated }: Props) {
   return (

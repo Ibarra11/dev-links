@@ -4,7 +4,7 @@ export type Platforms = (typeof PLATFORMS)[number];
 
 export type Link = { platform: Platforms; url: string };
 
-export type LinkError = EmptyError | InvalidError;
+export type InputError = EmptyError | InvalidError;
 
 type EmptyError = {
   type: "empty_url";

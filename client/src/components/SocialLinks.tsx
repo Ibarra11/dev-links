@@ -1,5 +1,4 @@
-import { PLATFORMS } from "../lib/constants";
-import { LinkError, Link, Platforms } from "../types";
+import { InputError, Link, Platforms } from "../types";
 
 import SocialLink from "./SocialLink";
 
@@ -11,7 +10,7 @@ interface Props {
     nextPlatform: Platforms,
   ) => void;
   handleUpdateLinkUrl: (platform: Platforms, url: string) => void;
-  errors: Record<Platforms, LinkError> | null;
+  errors: Record<Platforms, InputError> | null;
 }
 export default function SocialLinks({
   links,

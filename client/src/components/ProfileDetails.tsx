@@ -5,6 +5,17 @@ import ToastMessage from "./ToastMessage";
 import { CircleCheckBig } from "lucide-react";
 import Input from "./Input";
 import InputLabel from "./InputLabel";
+import React from "react";
+import { InputError } from "../types";
+interface FormField {
+  value: string;
+  required: boolean;
+}
+interface FormFields {
+  firstName: FormField;
+  lastName: FormField;
+  email: FormField;
+}
 
 export default function ProfileDetails() {
   return (
@@ -12,7 +23,6 @@ export default function ProfileDetails() {
       <div className="mb-10">
         <ProfileHeader />
       </div>
-
       <div className="mb-6">
         <ProfilePicture />
       </div>
@@ -22,47 +32,95 @@ export default function ProfileDetails() {
 }
 
 function ProfileForm() {
+  const [fields, setFields] = React.useState<FormFields>({
+    firstName: { value: "", required: true },
+    lastName: { value: "", required: true },
+    email: { value: "", required: false },
+  });
+
+  const [errors, setErrors] = React.useState<Record<
+    keyof FormFields,
+    InputError
+  > | null>(null);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const nextFields = { ...fields };
+    const target = e.target.name as keyof FormFields;
+    // nextFields[target] = {...}
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const errors = {} as Record<keyof FormFields, InputError>;
+    let hasErrors = false;
+    Object.entries(fields).some(([key, field]) => {
+      if (field.required && field.value.trim() === "") {
+        hasErrors = true;
+        errors[key as keyof FormFields] = { type: "empty_url" };
+      }
+    });
+    if (hasErrors) {
+      setErrors(errors);
+      return;
+    }
+
+    toast(
+      <ToastMessage
+        message="Your changes have been successfully saved!"
+        icon={<CircleCheckBig size={16} />}
+      />,
+    );
+  }
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        toast(
-          <ToastMessage
-            message="Your changes have been successfully saved!"
-            icon={<CircleCheckBig size={16} />}
-          />,
-        );
-      }}
+      onSubmit={handleSubmit}
       className="space-y-3 rounded-lg bg-brand-gray-100 p-5"
     >
       <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between lg:flex-col lg:items-start xl:flex-row xl:items-center">
-        <InputLabel className="shrink-0" htmlFor="firstName">
-          First Name
+        <InputLabel
+          className="flex shrink-0 justify-between"
+          htmlFor="lastName"
+        >
+          <div className="relative">
+            First Name
+            <span className="absolute -top-1">*</span>
+          </div>
         </InputLabel>
         <Input
-          className="w-full md:w-[340px] lg:w-[420px]"
+          onChange={handleChange}
+          name="firstName"
+          className="w-full px-2 md:w-[340px] lg:w-[420px]"
           type="text"
           id="firstName"
+          error={errors && errors.firstName && errors.firstName.type}
         />
       </div>
       <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between lg:flex-col lg:items-start xl:flex-row xl:items-center">
-        <InputLabel className="shrink-0" htmlFor="lastName">
-          Last Name
+        <InputLabel
+          className="flex shrink-0 justify-between"
+          htmlFor="lastName"
+        >
+          <div className="relative">
+            Last Name
+            <span className="absolute -top-1">*</span>
+          </div>
         </InputLabel>
         <Input
-          className="w-full md:w-[340px] lg:w-[420px]"
+          className="w-full px-2 md:w-[340px] lg:w-[420px]"
           type="text"
           id="lastName"
+          name="lastName"
+          error={errors && errors.lastName && errors.lastName.type}
         />
       </div>
       <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between lg:flex-col lg:items-start xl:flex-row xl:items-center">
-        <InputLabel className="shrink-0" htmlFor="email">
-          Email
-        </InputLabel>
+        <InputLabel htmlFor="email">Email</InputLabel>
         <Input
-          className="w-full md:w-[340px] lg:w-[420px]"
+          className="w-full px-2 md:w-[340px] lg:w-[420px]"
           type="text"
           id="email"
+          name="email"
         />
       </div>
       <div className="mt-6 h-px bg-brand-gray-200 lg:hidden"></div>

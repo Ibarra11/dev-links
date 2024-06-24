@@ -4,7 +4,7 @@ import Button from "./Button";
 import React from "react";
 import SocialLinks from "./SocialLinks";
 import { PLATFORMS, PLATFORM_PATTERNS } from "../lib/constants";
-import { Link, Platforms, LinkError } from "../types";
+import { Link, Platforms, InputError } from "../types";
 import { DndContext } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
@@ -17,7 +17,7 @@ export default function CustomizeLinks() {
   const [links, setLinks] = React.useState<Array<Link>>([]);
   const [errors, setErrors] = React.useState<Record<
     Platforms,
-    LinkError
+    InputError
   > | null>(null);
 
   const gridSize = 20; // pixels
@@ -25,7 +25,7 @@ export default function CustomizeLinks() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const errors = {} as Record<Platforms, LinkError>;
+    const errors = {} as Record<Platforms, InputError>;
     const hasErrors = links.filter((link) => {
       if (link.url.trim() === "") {
         return true;

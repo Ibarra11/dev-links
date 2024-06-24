@@ -4,6 +4,8 @@ import LogoSmall from "../assets/images/logo-small.svg";
 import { cn } from "../lib/utils";
 import { Link as IconLink, CircleUserRound, Eye } from "lucide-react";
 import Button from "./Button";
+import toast from "react-hot-toast";
+import ToastMessage from "./ToastMessage";
 export default function Navbar() {
   const { pathname } = useLocation();
   const isPreviewNav = pathname === "/preview";
@@ -69,6 +71,15 @@ function PreviewNav() {
       <Button
         className="flex-1 md:w-fit md:flex-grow-0 md:px-6"
         variant="primary"
+        onClick={() => {
+          navigator.clipboard.writeText("https://alanjibarradev.gmail.com");
+          toast(
+            <ToastMessage
+              message="The Link has been copied to clipboard!"
+              icon={<IconLink size={16} />}
+            />,
+          );
+        }}
       >
         Share Link
       </Button>
