@@ -17,7 +17,6 @@ interface Props {
 export default function PlatformSelect({
   selectedPlatforms,
   handleUpdateLinkPlatform,
-
   ...props
 }: Props) {
   const [selectedPlatform, setSelectedPlatform] = React.useState<Platforms>(
@@ -59,6 +58,7 @@ export default function PlatformSelect({
             <Select.Group className="text-brand-gray-300">
               {PLATFORMS.map((platform, idx) => (
                 <SelectItem
+                  key={platform}
                   disabled={
                     selectedPlatforms.includes(platform) &&
                     platform !== selectedPlatform

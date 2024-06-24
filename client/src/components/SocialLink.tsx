@@ -1,6 +1,6 @@
 import { Grip, Link } from "lucide-react";
 import InputLabel from "./InputLabel";
-import InputWithIcon from "./Input";
+import Input from "./Input";
 import React from "react";
 import PlatformSelect from "./Select";
 import { InputError, Platforms } from "../types";
@@ -17,6 +17,7 @@ interface Props {
     prevPlatform: Platforms,
     nextLink: Platforms,
   ) => void;
+  linkUrl: string;
   handleUpdateLinkUrl: (platform: Platforms, url: string) => void;
   errors: Record<Platforms, InputError> | null;
 }
@@ -28,13 +29,14 @@ export default function SocialLink({
   handleUpdateLinkPlatform,
   handleUpdateLinkUrl,
   errors,
+  linkUrl,
 }: Props) {
   const id = React.useId();
 
   return (
     <DraggableDroppableItem position={linkNumber - 1} id={selectedPlatform}>
       <div className={`relative space-y-4 rounded-xl bg-brand-gray-100 p-5`}>
-        <div className="border border-red-500">
+        <div>
           <div className="flex justify-between">
             <div className="flex items-center gap-2 text-brand-gray-300">
               <Grip size={16} />
@@ -66,14 +68,16 @@ export default function SocialLink({
                 </p>
               )}
             </div>
-            <InputWithIcon
+
+            <Input
               type="text"
               id={`link-${id}`}
               placeholder={`e.g. ${PLACEHOLDERS[selectedPlatform]}`}
               icon={<Link size={16} />}
-              onChange={(e) =>
-                handleUpdateLinkUrl(selectedPlatform, e.target.value)
-              }
+              value={linkUrl}
+              onChange={(e) => {
+                handleUpdateLinkUrl(selectedPlatform, e.target.value);
+              }}
               error={
                 errors &&
                 errors[selectedPlatform] &&

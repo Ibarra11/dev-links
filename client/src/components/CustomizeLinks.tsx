@@ -5,20 +5,24 @@ import React from "react";
 import SocialLinks from "./SocialLinks";
 import { PLATFORMS, PLATFORM_PATTERNS } from "../lib/constants";
 import { Link, Platforms, InputError } from "../types";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, useSensor, useSensors } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
   restrictToParentElement,
   restrictToVerticalAxis,
   createSnapModifier,
 } from "@dnd-kit/modifiers";
+import { SmartPointerSensor } from "../lib/customSensor";
 
 export default function CustomizeLinks() {
   const [links, setLinks] = React.useState<Array<Link>>([]);
+  const sensor = useSensor(SmartPointerSensor);
+  const sensors = useSensors(sensor);
   const [errors, setErrors] = React.useState<Record<
     Platforms,
     InputError
   > | null>(null);
+  const [editingLink, setEditingLink] = React.useState<Platforms | null>(null);
 
   const gridSize = 20; // pixels
   const snapToGridModifier = createSnapModifier(gridSize);
@@ -97,7 +101,6 @@ export default function CustomizeLinks() {
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
-
     if (over && active.id !== over.id) {
       const nextLinks = [...links];
       const activePosition: number = (active.data.current as any).position;
@@ -151,6 +154,10 @@ export default function CustomizeLinks() {
           </div>
           {links.length > 0 ? (
             <DndContext
+              onDragStart={(e) => {
+                console.log(e);
+              }}
+              sensors={sensors}
               onDragEnd={handleDragEnd}
               modifiers={[
                 restrictToParentElement,
@@ -206,7 +213,7 @@ function EmptyViewLink() {
         <div className="flex justify-center">
           <img
             src={EmptyLink}
-            aria-hidded="true"
+            aria-hidden="true"
             className="block h-20 w-32 object-cover md:h-40 md:w-60"
           />
         </div>

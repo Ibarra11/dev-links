@@ -30,6 +30,7 @@ export default function SocialLinks({
           selectedPlatforms={links.map((link) => link.platform)}
           handleUpdateLinkPlatform={handleUpdateLinkPlatform}
           handleUpdateLinkUrl={handleUpdateLinkUrl}
+          linkUrl={link.url}
           errors={errors}
         />
       ))}
