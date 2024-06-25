@@ -1,7 +1,4 @@
-interface Props {
-  links?: Array<string>;
-}
-export default function IphoneMockup({ links }: Props) {
+export default function IphoneMockup() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,11 +18,11 @@ export default function IphoneMockup({ links }: Props) {
       <circle cx={153.5} cy={112} r={48} fill="#EEE" />
       <rect width={160} height={16} x={73.5} y={185} fill="#EEE" rx={8}></rect>
       <rect width={72} height={8} x={117.5} y={214} fill="#EEE" rx={4}></rect>
-      <rect width={240} height={48} x={35} y={278} fill="#EEE" rx={8} />
-      <rect width={240} height={48} x={35} y={342} fill="#EEE" rx={8} />
-      <rect width={240} height={48} x={35} y={406} fill="#EEE" rx={8} />
-      <rect width={240} height={48} x={35} y={470} fill="#EEE" rx={8} />
-      <rect width={240} height={48} x={35} y={534} fill="#EEE" rx={8} />
+      <rect width={240} height={48} x={36} y={278} fill="#EEE" rx={8} />
+      <rect width={240} height={48} x={36} y={342} fill="#EEE" rx={8} />
+      <rect width={240} height={48} x={36} y={406} fill="#EEE" rx={8} />
+      <rect width={240} height={48} x={36} y={470} fill="#EEE" rx={8} />
+      <rect width={240} height={48} x={36} y={534} fill="#EEE" rx={8} />
     </svg>
   );
 }

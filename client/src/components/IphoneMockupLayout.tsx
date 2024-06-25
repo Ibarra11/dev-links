@@ -10,14 +10,13 @@ export default function IphoneMockupLayout({
       <div className="hidden lg:grid lg:flex-1 lg:place-content-center">
         <div className="relative">
           <IphoneMockup />
-          {links.map((link, idx) => (
-            <div
-              style={{ top: 278 + 64 * idx }}
-              className={`absolute left-[35px] h-12 w-60 rounded-lg`}
-            >
-              <SocialCard social={link.platform} />
-            </div>
-          ))}
+          <div className="absolute left-9 top-[278px] flex h-[304px] w-60 flex-col gap-4 overflow-y-auto">
+            {links.map((link) => (
+              <div className={`h-12 w-full shrink-0 rounded-lg`}>
+                <SocialCard social={link.platform} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <div className="h-full lg:flex-1">{children}</div>

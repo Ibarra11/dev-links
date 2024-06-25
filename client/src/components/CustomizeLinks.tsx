@@ -93,8 +93,8 @@ export default function CustomizeLinks() {
                   },
                 ]);
               }}
-              disabled={links.length === 5}
-              className={`gap-1 ${links.length === 5 ? "opacity-70" : ""}`}
+              disabled={links.length === PLATFORMS.length}
+              className="gap-1 disabled:opacity-70"
               variant="secondary"
               type="button"
             >
