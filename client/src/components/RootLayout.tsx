@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 
 import { Toaster, resolveValue } from "react-hot-toast";
+import LinksProvider from "./UserProfileProvider";
 export default function RootLayout() {
   return (
     // add flex column on the lg viewport, so any pages that want to fill that space can do so.
@@ -10,7 +11,9 @@ export default function RootLayout() {
         <Navbar />
       </header>
       <div className="flex-1 overflow-y-hidden p-4 md:p-6 md:pb-20">
-        <Outlet />
+        <LinksProvider>
+          <Outlet />
+        </LinksProvider>
       </div>
 
       <Toaster>

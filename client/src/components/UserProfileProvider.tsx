@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { InputError, Link, Platforms } from "../types";
+import { InputError, Link, Platforms, Profile } from "../types";
 
 interface Context {
   links: Array<Link>;
@@ -14,27 +14,40 @@ interface Context {
   setErrors: React.Dispatch<
     React.SetStateAction<Record<Platforms, InputError> | null>
   >;
+  handleUpdateProfile: (newProfile: Profile) => void;
+  profile: Profile;
 }
 
-const LinksContext = createContext<Context>({} as Context);
+const UserProfileContext = createContext<Context>({} as Context);
 
-export function useLinks() {
-  const context = useContext(LinksContext);
+export function useUserProfile() {
+  const context = useContext(UserProfileContext);
   if (!context) {
     throw new Error("Must be used within a LinksProvider");
   }
   return context;
 }
 
-export default function LinksProvider({
+export default function UserProfileProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [profile, setProfile] = useState<Profile>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    picture: "",
+  });
+
   const [links, setLinks] = useState<Array<Link>>([]);
   const [errors, setErrors] = useState<Record<Platforms, InputError> | null>(
     null,
   );
+
+  function handleUpdateProfile(newProfile: Profile) {
+    setProfile(newProfile);
+  }
 
   function handleRemoveLink(platform: Platforms) {
     const index = links.findIndex((link) => link.platform === platform);
@@ -82,8 +95,10 @@ export default function LinksProvider({
   }
 
   return (
-    <LinksContext.Provider
+    <UserProfileContext.Provider
       value={{
+        handleUpdateProfile,
+        profile,
         links,
         errors,
         setErrors,
@@ -94,6 +109,6 @@ export default function LinksProvider({
       }}
     >
       {children}
-    </LinksContext.Provider>
+    </UserProfileContext.Provider>
   );
 }

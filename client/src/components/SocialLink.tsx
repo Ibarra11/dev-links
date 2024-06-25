@@ -6,7 +6,7 @@ import PlatformSelect from "./Select";
 import { InputError, Platforms } from "../types";
 import { PLACEHOLDERS } from "../lib/constants";
 import DraggableDroppableItem from "./DraggaleAndDroppableItem";
-import { useLinks } from "./LinksProvider";
+import { useUserProfile } from "./UserProfileProvider";
 
 interface Props {
   linkNumber: number;
@@ -26,7 +26,7 @@ export default function SocialLink({
     handleUpdateLinkPlatform,
     handleUpdateLinkUrl,
     errors,
-  } = useLinks();
+  } = useUserProfile();
 
   return (
     <DraggableDroppableItem position={linkNumber - 1} id={selectedPlatform}>

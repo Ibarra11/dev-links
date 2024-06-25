@@ -4,6 +4,13 @@ export type Platforms = (typeof PLATFORMS)[number];
 
 export type Link = { platform: Platforms; url: string };
 
+export type Profile = {
+  picture?: string;
+  firstName: string;
+  lastName: string;
+  email?: string;
+};
+
 export type InputError = EmptyError | InvalidError;
 
 type EmptyError = {

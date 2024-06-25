@@ -13,10 +13,10 @@ import {
   createSnapModifier,
 } from "@dnd-kit/modifiers";
 import { SmartPointerSensor } from "../lib/customSensor";
-import { useLinks } from "./LinksProvider";
+import { useUserProfile } from "./UserProfileProvider";
 
 export default function CustomizeLinks() {
-  const { links, setLinks, setErrors } = useLinks();
+  const { links, setLinks, setErrors } = useUserProfile();
   const sensor = useSensor(SmartPointerSensor);
   const sensors = useSensors(sensor);
   const gridSize = 20; // pixels

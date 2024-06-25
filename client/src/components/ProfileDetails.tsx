@@ -7,6 +7,7 @@ import Input from "./Input";
 import InputLabel from "./InputLabel";
 import React from "react";
 import { InputError } from "../types";
+import { useUserProfile } from "./UserProfileProvider";
 interface FormField {
   value: string;
   required: boolean;
@@ -18,13 +19,30 @@ interface FormFields {
 }
 
 export default function ProfileDetails() {
+  const { profile, handleUpdateProfile } = useUserProfile();
+
+  function handleProfilePicturePreview(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        console.log(reader.result);
+        handleUpdateProfile({ ...profile, picture: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   return (
     <div className="rounded-xl bg-white p-6 md:p-10 lg:mx-auto lg:w-full lg:max-w-5xl">
       <div className="mb-10">
         <ProfileHeader />
       </div>
       <div className="mb-6">
-        <ProfilePicture />
+        <ProfilePictureUpload
+          handleProfilePicturePreview={handleProfilePicturePreview}
+        />
       </div>
       <ProfileForm />
     </div>
@@ -155,12 +173,19 @@ function ProfileHeader() {
   );
 }
 
-function ProfilePicture() {
+function ProfilePictureUpload({
+  handleProfilePicturePreview,
+}: {
+  handleProfilePicturePreview: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   return (
     <div className="mb-6 flex flex-col gap-4 rounded-lg bg-brand-gray-100 p-5 md:flex-row md:items-center md:justify-between lg:gap-16">
       <p className="text-base text-brand-gray-300">Profile Picture</p>
       <div className="flex flex-col gap-6 md:flex-row md:items-center lg:flex-1">
-        <div className="grid h-44 w-full place-content-center rounded-lg bg-brand-purple-100">
+        <label
+          className="grid h-44 w-full cursor-pointer place-content-center rounded-lg bg-brand-purple-100 transition-colors hover:bg-violet-200"
+          htmlFor="picture-upload"
+        >
           <div className="flex flex-col items-center space-y-2 text-brand-purple-300">
             <Image size={40} />
             <div className="flex items-center gap-1">
@@ -168,7 +193,14 @@ function ProfilePicture() {
               <p className="text-base">Upload Image</p>
             </div>
           </div>
-        </div>
+          <input
+            id="picture-upload"
+            type="file"
+            className="hidden"
+            accept="image/png, image/jpg"
+            onChange={handleProfilePicturePreview}
+          />
+        </label>
         <p className="text-xs">
           Image must be below 1024x1024px. Use PNG or JPG format.
         </p>
