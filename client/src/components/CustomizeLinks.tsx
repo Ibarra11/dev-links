@@ -68,7 +68,7 @@ export default function CustomizeLinks() {
         onSubmit={handleSubmit}
         className="flex h-full flex-col lg:mx-auto lg:w-full lg:max-w-5xl"
       >
-        <div className="relative flex-1 overflow-y-auto border border-green-500 p-6 md:p-10 lg:pt-16">
+        <div className="relative flex-1 overflow-y-auto p-6 md:flex md:flex-col md:p-10 lg:pt-16">
           <div className="mb-10 space-y-2">
             <h1 className="text-2xl font-bold text-brand-gray-300 md:text-4xl">
               Customize your links
@@ -115,7 +115,9 @@ export default function CustomizeLinks() {
               <SocialLinks links={links} />
             </DndContext>
           ) : (
-            <EmptyViewLink />
+            <div className="h-96 md:flex-1">
+              <EmptyViewLink />
+            </div>
           )}
         </div>
         <div>
@@ -149,7 +151,7 @@ export default function CustomizeLinks() {
 
 function EmptyViewLink() {
   return (
-    <div className="flex h-96 items-center rounded-xl bg-brand-gray-100 p-5 md:h-[500px]">
+    <div className="flex h-full items-center rounded-xl bg-brand-gray-100 p-5">
       <div className="w-full">
         <div className="flex justify-center">
           <img
