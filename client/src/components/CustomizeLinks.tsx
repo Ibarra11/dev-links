@@ -4,7 +4,7 @@ import Button from "./Button";
 import React from "react";
 import SocialLinks from "./SocialLinks";
 import { PLATFORMS, PLATFORM_PATTERNS } from "../lib/constants";
-import { Link, Platforms, InputError } from "../types";
+import { Platforms, InputError } from "../types";
 import { DndContext, useSensor, useSensors } from "@dnd-kit/core";
 import type { DragEndEvent } from "@dnd-kit/core";
 import {
@@ -13,17 +13,12 @@ import {
   createSnapModifier,
 } from "@dnd-kit/modifiers";
 import { SmartPointerSensor } from "../lib/customSensor";
+import { useLinks } from "./LinksProvider";
 
 export default function CustomizeLinks() {
-  const [links, setLinks] = React.useState<Array<Link>>([]);
+  const { links, setLinks, setErrors } = useLinks();
   const sensor = useSensor(SmartPointerSensor);
   const sensors = useSensors(sensor);
-  const [errors, setErrors] = React.useState<Record<
-    Platforms,
-    InputError
-  > | null>(null);
-  const [editingLink, setEditingLink] = React.useState<Platforms | null>(null);
-
   const gridSize = 20; // pixels
   const snapToGridModifier = createSnapModifier(gridSize);
 
@@ -52,51 +47,6 @@ export default function CustomizeLinks() {
       });
     }
     setErrors(errors);
-  }
-
-  function removeError(platform: Platforms) {
-    if (errors && errors[platform]) {
-      delete errors[platform];
-    }
-  }
-
-  function handleRemoveLink(platform: Platforms) {
-    const index = links.findIndex((link) => link.platform === platform);
-    if (index >= 0) {
-      if (index === links.length - 1) {
-        setLinks(links.slice(0, -1));
-      } else {
-        const leftHalf = links.slice(0, index);
-        const rightHalf = links.slice(index + 1);
-        setLinks(leftHalf.concat(rightHalf));
-      }
-    }
-    removeError(platform);
-  }
-
-  function handleUpdateLinkUrl(platform: Platforms, url: string) {
-    const nextLinks = links.map((link) => {
-      if (link.platform === platform) {
-        return { ...link, url };
-      }
-      return link;
-    });
-    setLinks(nextLinks);
-    removeError(platform);
-  }
-
-  function handleUpdateLinkPlatform(
-    prevPlatform: Platforms,
-    nextPlatform: Platforms,
-  ) {
-    const nextLinks = links.map((link) => {
-      if (link.platform === prevPlatform) {
-        return { ...link, platform: nextPlatform };
-      }
-      return link;
-    });
-    setLinks(nextLinks);
-    removeError(prevPlatform);
   }
 
   const handleDragEnd = (e: DragEndEvent) => {
@@ -143,8 +93,8 @@ export default function CustomizeLinks() {
                   },
                 ]);
               }}
-              disabled={links.length === PLATFORMS.length}
-              className="gap-1"
+              disabled={links.length === 5}
+              className={`gap-1 ${links.length === 5 ? "opacity-70" : ""}`}
               variant="secondary"
               type="button"
             >
@@ -154,9 +104,6 @@ export default function CustomizeLinks() {
           </div>
           {links.length > 0 ? (
             <DndContext
-              onDragStart={(e) => {
-                console.log(e);
-              }}
               sensors={sensors}
               onDragEnd={handleDragEnd}
               modifiers={[
@@ -165,13 +112,7 @@ export default function CustomizeLinks() {
                 snapToGridModifier,
               ]}
             >
-              <SocialLinks
-                handleUpdateLinkPlatform={handleUpdateLinkPlatform}
-                handleUpdateLinkUrl={handleUpdateLinkUrl}
-                handleRemoveLink={handleRemoveLink}
-                links={links}
-                errors={errors}
-              />
+              <SocialLinks links={links} />
             </DndContext>
           ) : (
             <EmptyViewLink />

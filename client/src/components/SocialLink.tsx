@@ -5,33 +5,28 @@ import React from "react";
 import PlatformSelect from "./Select";
 import { InputError, Platforms } from "../types";
 import { PLACEHOLDERS } from "../lib/constants";
-import { useDraggable, useDroppable } from "@dnd-kit/core";
 import DraggableDroppableItem from "./DraggaleAndDroppableItem";
+import { useLinks } from "./LinksProvider";
 
 interface Props {
   linkNumber: number;
-  handleRemoveLink: (platform: Platforms) => void;
   selectedPlatform: Platforms;
   selectedPlatforms: Array<Platforms>;
-  handleUpdateLinkPlatform: (
-    prevPlatform: Platforms,
-    nextLink: Platforms,
-  ) => void;
   linkUrl: string;
-  handleUpdateLinkUrl: (platform: Platforms, url: string) => void;
-  errors: Record<Platforms, InputError> | null;
 }
 export default function SocialLink({
   linkNumber,
-  handleRemoveLink,
   selectedPlatform,
   selectedPlatforms,
-  handleUpdateLinkPlatform,
-  handleUpdateLinkUrl,
-  errors,
   linkUrl,
 }: Props) {
   const id = React.useId();
+  const {
+    handleRemoveLink,
+    handleUpdateLinkPlatform,
+    handleUpdateLinkUrl,
+    errors,
+  } = useLinks();
 
   return (
     <DraggableDroppableItem position={linkNumber - 1} id={selectedPlatform}>
